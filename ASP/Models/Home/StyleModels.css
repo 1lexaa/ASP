@@ -1,0 +1,29 @@
+﻿.table {
+    width: 100%;
+    margin-bottom: 20px;
+    border: 15px solid #ffffff;
+    border-top: 5px solid #ffffff;
+    border-collapse: collapse;
+}
+
+    .table th:nth-child(even) {
+        font-weight: bold;
+        padding: 5px;
+        background-color: aliceblue;
+        border: none;
+        border-bottom: 5px solid #e6e6e6;
+    }
+
+    .table th:nth-child(odd) {
+        font-weight: bold;
+        padding: 5px;
+        background-color: darkgrey;
+        border: none;
+        border-bottom: 5px solid #ffffff;
+    }
+
+    .table td {
+        padding: 5px;
+        border: none;
+        border-bottom: 5px solid #ffffff;
+    }

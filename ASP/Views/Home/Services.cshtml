@@ -1,0 +1,46 @@
+﻿@using ASP.Services
+@inject TimeService time_services;
+@inject DateService date_services;
+@inject DtService dt_services;
+@{
+    ViewData["Title"] = "ASP Basics";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Службы (сервисы) ASP</h1>
+</div>
+<p>
+    Службы - это "поставщики услуг", зависимости в понимании инверсии управления,
+    которые внедряются (инжектуются) в другие классы (объекты).
+</p>
+<p>
+    Инверсия управления, как реализация - способ делегирования процессов создания
+    объектов к определенномуя "центру управления" - инжектора.
+    Инжектор настраивается при старте программы (в Program.cs/Startap.cs).
+    С помошбю <code>builder.Services</code>
+</p>
+<p>
+    Классы и интерфейсы служб принято хранить отдельно, в папке <code>Services</code>
+    <br />
+    - Создаем класс TimeService;<br />
+    - Регестрируем его как сервис (<code>builder.Services.AddSingleton<TimeService>();</code>)<br />
+    - После регестрации служба попадает к инжектору и может быть внедрена в другие классы.
+    Рекомендованный способ внидрения - через конструктор класса<br />
+    Данные от службы: <i>@time_services.GetTime()</i><br />
+    Хеш службы: <i>@time_services.GetHashCode()</i><br />
+    Данные от службы: <i>@date_services.GetDate()</i><br />
+    Хеш службы: <i>@date_services.GetHashCode()</i><br />
+    Данные от службы: <i>@dt_services.GetNow()</i><br />
+    Хеш службы: <i>@dt_services.GetHashCode()</i><br />
+</p>
+<p>
+    Службу можно внедрить
+    Данные от службы: <i>@time_services.GetTime()</i><br />
+    Хеш службы: <i>@time_services.GetHashCode()</i><br />
+</p>
+<p>
+    Хеш службы time_services(cont): <i>@ViewData["hashCode"]</i><br />
+    Хеш службы time_services(view): <i>@time_services.GetHashCode()</i><br />
+
+    Демо: хеш("123") = <b>@ViewData["hash"]</b>
+</p>

@@ -1,0 +1,13 @@
+﻿@using ASP.Models.User
+@{
+    ViewData["Title"] = "Добро пожаловать ";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Регистрация прошла успешно</h1>
+</div>
+<p>Уважаемый <strong>@Model.Name</strong></p>
+<p>
+    Добро пожаловать на наш сайт, для входа на сайт!
+</p>
+<img src="/Avatars/@(ViewData["avatarFilename"])" alt="AVA" />

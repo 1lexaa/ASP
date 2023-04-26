@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Введение";
+}
+
+<div class="text-center"><h1 class="display-4">Introduction</h1></div>
+<p>ASP - Active Server Pages - фреймворк C# (.NET) для создания веб-приложений.</p>
+<p>
+    ? Что означает шаблон маршрутизации: pattern: "{controller=Home}/{action=Index}/{id?}"
+    <br />
+    ! Это правило формирования / "разборки" URL в запросе:<br />
+    - первая часть это controller, если не указана, то устанавливается в Home<br />
+    - вторая часть это action (метод), если не указана, то устанавливается в Index<br />
+    - третья часть не является обязательной и обозначается как id<br />
+    <b>Например</b><br />
+    Запрос "/" (пустой) - воспринимается как /Home/Index<br />
+    "/Items" - как /Items/Index (контроллер - ItemsController.cs,
+    в нем метод – Index())<br />
+    "/Items/Goods": контроллер - ItemsController.cs, в нем метод - Goods()<br />
+    "/Items/Goods/123": если метод Goods() имеет параметр Goods(String id), то будет передан id="123"
+</p>
+<p>
+    ? Как происходит поиск контроллеров/представлений? <br />
+    ! По совпадению имен. Контроллеры ищутся в папке Controllers по совпадению
+    Name.cs или NameController.cs (рекомендуется)<br />
+    Представление – в папке Views, подпапках Shared и Name (по имени контроллера)
+    Название представления – по имени метода (action)
+</p>

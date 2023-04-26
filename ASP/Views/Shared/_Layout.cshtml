@@ -1,0 +1,143 @@
+﻿@using ASP.DATA.Entity;
+@using System.Security.Claims;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ASP</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ASP.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ASP</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            @if (Context.User.Identity is not null && Context.User.Identity.IsAuthenticated)
+            {
+                String userLogin = Context.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                String userAvatar = Context.User.Claims.First(c => c.Type == ClaimTypes.UserData).Value;
+
+                @if (String.IsNullOrEmpty(userAvatar))
+                    userAvatar = "v1ymsp6yua3xf0izjdai.png";
+
+                <a asp-controller="User" asp-action="Profile" asp-route-id="@userLogin">
+                    <img src="/Avatars/@(userAvatar)" style="max-width:40px; border-radius:50%" title="@userLogin" />
+                </a>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z" />
+                    <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
+                </svg>
+            }
+            else
+            {
+                <!-- Button trigger modal -->
+                <button type="Log in site" class="btn btn-outline-info mx-3" data-bs-toggle="modal" data-bs-target="#authModal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z" />
+                        <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />\
+                    </svg>
+                </button>
+            }
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - ASP - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <!-- Modal -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form asp-controller="User" asp-action="AuthUser" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="authModalLabel">Autentification</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-login">Login</label>
+                        <input id="user-login" type="text" name="user-login" class="form-control" placeholder="Input Login" />
+                    </div>
+                    <div class="form-group">
+                        <label for="user-password">Password</label>
+                        <input id="user-password" type="text" name="user-password" class="form-control" placeholder="Input Password" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="login-button">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () =>
+        {
+            const loginButton = document.getElementById("login-button");
+
+            if (!loginButton)
+                throw "login-button not found";
+            loginButton.addEventListener("click", loginButtonClick);
+        });
+        function loginButtonClick()
+        {
+            const userLoginInput = document.getElementById("user-login");
+
+            if (!userLoginInput)
+                throw "user-login input not found";
+
+            const login = userLoginInput.value;
+            const userPasswordInput = document.getElementById("user-password");
+
+            if (!userPasswordInput)
+                throw "user-password input not found";
+
+            const password = userPasswordInput.value;
+
+            window.fetch("/User/AuthUser",
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `user-login=${login}&user-password=${password}`
+            }).then(r => r.text()).then(t =>
+                {
+                    if (t === "OK")
+                        window.location.reload();
+                    else
+                    {
+                        console.log(t);
+                        //const authentication_failure_model = new bootstrap.Modal(document.getElementById('authModal'));
+                        //authentication_failure_model.show(modal);
+                    }
+                });
+        }
+    </script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,107 @@
+﻿@model ASP.Models.User.UserRegistrationModel
+@{
+    ViewData["Title"] = "Registration";
+}
+
+<link href="/css/RegistrationStyle.css" rel="stylesheet" />
+
+<div class="registration-form">
+    <h2>Registration</h2>
+    <form method="post" asp-controller="User" asp-action="RegisterUser" enctype="multipart/form-data">
+        <div class="form-group">
+            <label asp-for="Name">Name</label>
+            <input type="text" asp-for="Name" required>
+        </div>
+        <div class="form-group">
+            <label asp-for="Email">Email</label>
+            <input type="email" asp-for="Email" required>
+        </div>
+        <div class="form-group">
+            <label asp-for="Login">Login</label>
+            <input type="text" asp-for="Login" required>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password">Password</label>
+            <input type="password" asp-for="Password" required>
+        </div>
+        <div class="form-group">
+            <label asp-for="RepeatPassword">Password confirmation</label>
+            <input type="password" asp-for="RepeatPassword" required>
+            <span asp-validation-for="RepeatPassword" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Avatar" class="form-label">Выбрать файл для аватарки</label>
+            <input asp-for="Avatar" class="form-control" type="file" id="formFile">
+            <span asp-validation-for="Avatar" class="text-danger"></span>
+        </div>
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+@if (ViewData["user_registration_model"] is ASP.Models.User.UserValidationModel validation_results)
+{
+    <p>
+        Полученнныйе данные: <br />
+        Name: @validation_results.NameMessage<br />
+        Email: @validation_results.EmailMessage<br />
+        Login: @validation_results.LoginMessage<br />
+        Password: @validation_results.PasswordMessage --> @validation_results.RepeatPasswordMessage<br />
+    </p>
+}
+
+<hr />
+<hr />
+<h2>Работа с формами</h2>
+<p>
+    В ASP идея моделей, как описания комплексных данных, закладывается в основу
+    организации как самих форм, так и контроллеров, которые эти данные обрабатывают.
+    При разработке формы, обычно, все начинается с модели.
+</p>
+<p>
+    Согласование передачи данных происходит по именам: следует соблюдать
+    одинаковых имен в форме и контроллере. Во избежание ошибок крайне
+    рекомендуется использовать тег-помощники с атрибутом asp-for.
+    Значение атрибута соответствует полям (свойствам) модели, улучшающей
+    контроль над ошибками. Более того, этот атрибут автоматически генерирует
+    id и name для элемента, а также подбирает тип input в соответствии с типом
+    данные поля модели. Плюс для полей, не передающих отдельные значения,
+    например, неотмеченные checkbox, создаются скрытые поля для
+    передачи значения по умолчанию.
+</p>
+<p>
+    Методы контроллеров могут получать данные форм и сразу переносить их
+    в объекты-модели (точнее, создавать объекты и заполнять их поля).
+    Связывание осуществляется <u>по совпадению имен</u> в классе-модели и параметрах
+    запроса. Это повышает важность правильного установления имен полей форм,
+    то есть рекомендует использовать средства asp-for. Также желательно проверять <b>все</b>
+    поля модели даже если видно, что некоторые проходят нормально.
+</p>
+<hr />
+<h2>О формах HTML</h2>
+<p>
+    Формы – это средство HTML/браузера для отправки данных. Можно сказать,
+    что форма является расширением понятия "ссылка", которая не только переходит
+    по новому адресу, а еще и передает на него определенные данные. Аналогично с ссылками
+    отправка формы (переход по ссылке) разрушает страницу, и новая собирается
+    по ответу сервера.
+</p>
+<p>
+    Как форма передает данные?<br />
+    Особенности передачи данных устанавливаются атрибутами тега :<br />
+    <b>method</b> - get (default) | post - методы запроса (согласно
+    <a href="https://www.rfc-editor.org/rfc/rfc7231#page-22">стандартом</a>)<br />
+    <b>enctype</b> - application/x-www-form-urlencoded (default) | multipart/form-data <br />
+    application/x-www-form-urlencoded == name1=val1&name2=val2&....<br />
+    multipart/form-data == изобразить трудно - используется для передачи файлов<br />
+    get – запросы GET не должны иметь тело, соответственно данные передаются через URL
+    в части query/params<br />
+    post – данные вложенные в тело запроса. Для того чтобы их посмотреть нужно открыть
+    консоль браузера, выбрать инструмент "Network", выбрать главный запрос (за
+    названием страницы) и открыть таб "Payload"<br />
+</p>
+<hr />
+<h2>Передача файлов </h2>
+<p>
+    Со стороны HTML: в форме должно быть поле типа "file" и enctype формы
+    <b>обязательно</b> должен иметь значение "multipart/form-data"
+</p>

@@ -1,0 +1,73 @@
+﻿@model ASP.Models.Home.Model
+@{
+    ViewData["Title"] = "Модели";
+}
+
+<head>
+    <link rel="stylesheet" href="../Models/Home/StyleModels.css" />
+</head>
+
+<div class="text-center">
+    <h1 class="display-4">Передача модели в представления</h1>
+</div>
+
+<p>
+    В ASP.NET понятие модели несколько отличается от классического у
+    Патерны MVC – это класс, объект которого передается от контроллера к
+    представление – нечто похожее на интерфейс передачи данных.
+</p>
+<p>
+    В папке Models добавляем папку с названием контроллера (Home)<br />
+    В начале .cshtml заявляем тип модели оператором &commat;model<br />
+    В контроллере при вызове View указываем объект модели: <br />
+    Далее в коде переданный объект доступен по ключевому слову Model (для
+    произвольного класса моделей)
+</p>
+<br />
+<br />
+<p>Практическое задание</p>
+<div>
+    @foreach (String item in Model.Departments)
+    {
+        <p>@item</p>
+    }
+</div>
+<br />
+<br />
+<br />
+<br />
+<h2>ДОМАШНЕЕ ЗАДАНИЕ</h2>
+<p>
+    Д.З. Реализовать вывод данных о товарах, передаваемых через модель,
+    в виде HTML таблицы [№, Название, Цена]
+    (с заголовками, границами, *зеброй - разным фоном для четных и нечетных строк)
+    (цена округлена до копеек, если нет – .00 )
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Name</th>
+            <th>Price ($)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Products.Count; i++)
+        {
+            <tr>
+                <td>@(i + 1)</td>
+                <td>@Model.Products[i].Name</td>
+                <td>@Model.Products[i].Price $</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+<br />
+<br />
+<br />
+<h2>Шаблоны отображения</h2>
+@Html.DisplayFor(m => m.Products[0], "Product")
+<br />
+<br />
+@Html.DisplayFor(m => m.Products, "Products")
